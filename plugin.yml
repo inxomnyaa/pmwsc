@@ -1,0 +1,13 @@
+---
+name: pmwsc
+main: xenialdan\pmwsc\Loader
+version: 1.0.0
+api: [3.0.0, 4.0.0]
+load: POSTWORLD
+authors:
+- XenialDan
+description: pmmp WebSocket chat host
+permissions:
+  websocket:
+    default: true
+...
