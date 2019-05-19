@@ -670,7 +670,8 @@ class WSInstance extends Thread
 
         if ($pongReply) {
             $reply = $this->frame($payload, $user, self::MESSAGE_TYPE_PONG);
-            $this->writePacket($user, $reply);
+            $this->logger->debug("$user PONG");
+            $this->writePacket($user->socket, $reply);
             return false;
         }
         if ($headers['length'] > strlen($this->applyMask($headers, $payload))) {
