@@ -1,0 +1,15 @@
+﻿body {
+    margin: 0;
+}
+
+.table {
+    display: inline-table;
+}
+
+.table .table_row {
+    display: table-row;
+}
+
+.table .table_row .table_cell {
+    display: table-cell;
+}

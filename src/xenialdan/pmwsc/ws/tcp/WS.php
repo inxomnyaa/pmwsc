@@ -18,11 +18,12 @@ declare(strict_types=1);
 
 namespace xenialdan\pmwsc\ws\tcp;
 
-use pocketmine\command\RemoteConsoleCommandSender;
 use pocketmine\event\server\CommandEvent;
+use pocketmine\permission\Permissible;
 use pocketmine\permission\PermissionManager;
 use pocketmine\Server;
 use pocketmine\snooze\SleeperNotifier;
+use pocketmine\utils\Config;
 use raklib\utils\InternetAddress;
 use xenialdan\pmwsc\Loader;
 use xenialdan\pmwsc\user\WSUser;
@@ -94,6 +95,7 @@ class WS
         $command = $this->instance->cmd;
         if (empty($command) && $this->instance->user instanceof WSUser) {
             $user = $this->instance->user;
+            $user->setOp($this->server->isOp($user->name));
             if (!empty($user->name) && !empty($user->auth)) {
                 $this->server->getLogger()->debug("WS: Checking authentication code for user " . $user->name);
                 if (strtolower(Loader::getAuthCode($user->name, false)) !== $user->auth) {
@@ -103,8 +105,8 @@ class WS
             }
         } elseif ($command[0] === "/") {
             $command = ltrim($command, "/");
-            $sender = new RemoteConsoleCommandSender();
-            $this->server->getLogger()->debug("Called command " . $command);
+            $sender = $this->instance->user;
+            $this->server->getLogger()->debug("Called command " . $command . " for user " . $sender);
 
             $ev = new CommandEvent($sender, $command);
             $ev->call();
@@ -125,12 +127,28 @@ class WS
     public function broadcast(string $displayName, string $message): string
     {
         $recipients = PermissionManager::getInstance()->getPermissionSubscriptions(Server::BROADCAST_CHANNEL_USERS);
+        var_dump(array_filter($recipients, function (Permissible $permissible) {
+            return $permissible instanceof WSUser;
+        }));
         $format = "chat.type.text";
         $this->server->broadcastMessage(($reply = $this->server->getLanguage()->translateString($format, [$displayName, $message])), $recipients);
 
-        /*$this->instance->synchronized(function(WSInstance $thread){
+        $this->instance->synchronized(function (WSInstance $thread) {
             $thread->notify();
-        }, $this->instance);*/
+        }, $this->instance);
         return $reply;
+    }
+
+    public function getOps(): Config
+    {
+        return $this->getServer()->getOps();
+    }
+
+    /**
+     * @return Server
+     */
+    public function getServer(): Server
+    {
+        return $this->server;
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace xenialdan\pmwsc;
 
-use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use raklib\utils\InternetAddress;
@@ -39,13 +38,23 @@ class Loader extends PluginBase
 
     public function onEnable()
     {
-        $this->saveDefaultConfig();
         $this->reloadConfig();
-        self::$passwords = new Config($this->getDataFolder()."passwords.yml");
+        //save files
+        foreach (array_keys($this->getResources()) as $path) {
+            //$this->saveResource($path);
+            $this->saveResource($path, true);//TODO remove
+        }
+        //start website websocket listener thread
+        $serverRoot = $this->getDataFolder() . "wwwroot";
+        $ws = \Frago9876543210\WebServer\API::startWebServer($this, \Frago9876543210\WebServer\API::getPathHandler($serverRoot));
+        $ws->getClassLoader()->getParent()->addPath(realpath($serverRoot), true);
+        //generate login files
+        self::$passwords = new Config($this->getDataFolder() . "passwords.yml");
         $port = (int)($this->getConfig()->get("port", 9000));
         self::$ia = new InternetAddress($this->getServer()->getIp(), $port, 4);
         $this->getServer()->getCommandMap()->register("websocket", new WebsocketCommand("websocket", $this));
         $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+        //start the messaging websocket listener thread
         $this->startWebsocketServer();
     }
 

@@ -1,0 +1,908 @@
+:root {
+    --color_format_0: rgb(0, 0, 0);
+    --color_format_1: rgb(0, 0, 170);
+    --color_format_2: rgb(0, 170, 0);
+    --color_format_3: rgb(0, 170, 170);
+    --color_format_4: rgb(170, 0, 0);
+    --color_format_5: rgb(170, 0, 170);
+    --color_format_6: rgb(255, 170, 0);
+    --color_format_7: rgb(170, 170, 170);
+    --color_format_8: rgb(85, 85, 85);
+    --color_format_9: rgb(85, 85, 255);
+    --color_format_a: rgb(85, 255, 85);
+    --color_format_b: rgb(85, 255, 255);
+    --color_format_c: rgb(255, 85, 85);
+    --color_format_d: rgb(255, 85, 255);
+    --color_format_e: rgb(255, 255, 85);
+    --color_format_f: rgb(255, 255, 255);
+    --color_format_l: bold;
+    --color_format_m: line-through;
+    --color_format_n: underline;
+    --color_format_o: italic;
+    --color_format_black: var(--color_format_0);
+    --color_format_dark_blue: var(--color_format_1);
+    --color_format_dark_green: var(--color_format_2);
+    --color_format_dark_aqua: var(--color_format_3);
+    --color_format_dark_red: var(--color_format_4);
+    --color_format_dark_purple: var(--color_format_5);
+    --color_format_gold: var(--color_format_6);
+    --color_format_gray: var(--color_format_7);
+    --color_format_dark_gray: var(--color_format_8);
+    --color_format_blue: var(--color_format_9);
+    --color_format_green: var(--color_format_a);
+    --color_format_aqua: var(--color_format_b);
+    --color_format_red: var(--color_format_c);
+    --color_format_light_purple: var(--color_format_d);
+    --color_format_yellow: var(--color_format_e);
+    --color_format_white: var(--color_format_f);
+    --color_format_bold: var(--color_format_l);
+    --color_format_strikethrough: var(--color_format_m);
+    --color_format_underline: var(--color_format_n);
+    --color_format_italic: var(--color_format_o);
+    /* ICON SET */
+    --icon_cursor: url(../images/hd/cursor.png);
+    --icon_chat: url(../images/hd/chat_send.png);
+    --icon_open_book: url(../images/hd/creative_icon.png);
+    --icon_dot1: url(../images/hd/Dot1.png);
+    --icon_dot2: url(../images/hd/Dot2.png);
+    --icon_dot3: url(../images/hd/Dot3.png);
+    --icon_error: url(../images/hd/ErrorGlyph.png);
+    --icon_event_bar: url(../images/hd/EventBars.png);
+    --icon_experience_empty: url(../images/hd/experiencebarempty.png);
+    --icon_experience_full: url(../images/hd/experiencebarfull.png);
+    --icon_newspaper: url(../images/hd/feedIcon.png);
+    --icon_form: url(../images/hd/form.png);
+    --icon_frame: url(../images/hd/frame.png);
+    --icon_frame_inner: url(../images/hd/frame_inner.png);
+    --icon_friends: url(../images/hd/FriendsIcon.png);
+    --icon_message: url(../images/hd/invite_base.png);
+    --icon_message_read: url(../images/hd/message_read.png);
+    --icon_search: url(../images/hd/magnifyingGlass.png);
+    --icon_new_flag: url(../images/hd/newOffersIcon.png);
+    --icon_check: url(../images/hd/realms_green_check.png);
+    --icon_cross: url(../images/hd/realms_red_x.png);
+    --icon_refresh: url(../images/hd/refresh.png);
+    --icon_scroll_handle: url(../images/hd/ScrollHandle.png);
+    --icon_scroll_rail: url(../images/hd/ScrollRail.png);
+    --icon_warning: url(../images/hd/WarningGlyph.png);
+    --icon_world: url(../images/hd/worldsIcon.png);
+    --icon_x: url(../images/hd/X.png);
+    --icon_x_hover: url(../images/hd/XHover.png);
+    --icon_x_press: url(../images/hd/XPress.png);
+    --icon_settings: url(../images/hd/settings.png);
+    --icon_permissions_member: url(../images/hd/permissions_member_star.png);
+    --icon_permissions_op: url(../images/hd/permissions_op_crown.png);
+    --icon_permissions_visitor: url(../images/hd/permissions_visitor_hand.png);
+    --icon_permissions_custom: url(../images/hd/permissions_custom_dots.png);
+    --icon_permissions_builder: url(../images/hd/permissions_builder_helmet.png);
+    --icon_permissions_helper: url(../images/hd/permissions_helper_smile.png);
+    --icon_permissions_vip: url(../images/hd/permissions_vip.png);
+    --icon_three_dots: url(../images/hd/elipses.png);
+    --icon_coin: url(../images/hd/MCoin.png);
+    --icon_beta_flag: url(../images/hd/beta.png);
+    --icon_book_writable: url(../images/hd/book_writable.png);
+    --icon_black_arrow: url(../images/hd/black-arrow.png);
+    --icon_wrenches_debug: url(../images/hd/debug_glyph_color.png);
+    --icon_wrenches: url(../images/hd/Wrenches1.png);
+    --icon_info_bulb: url(../images/hd/infobulb.png);
+    --icon_language: url(../images/hd/language_glyph_color.png);
+    --icon_profile: url(../images/hd/profile_glyph_color.png);
+    --icon_realms: url(../images/hd/realmsIcon.png);
+    --icon_storage: url(../images/hd/storageIconColor.png);
+    --icon_lock: url(../images/hd/lock.png);
+    /* BUTTONS */
+    --input_button: url(../images/hd/inputs/base.png);
+    --input_button_active: url(../images/hd/inputs/basePress.png);
+    --input_button_hover: url(../images/hd/inputs/hover.png);
+    --input_button_hover_active: url(../images/hd/inputs/hoverPress.png);
+    /* CHECKBOXES */
+    --input_toggle_off: url(../images/hd/inputs/toggle_off.png);
+    --input_toggle_off_hover: url(../images/hd/inputs/toggle_off_hover.png);
+    --input_toggle_on: url(../images/hd/inputs/toggle_on.png);
+    --input_toggle_on_hover: url(../images/hd/inputs/toggle_on_hover.png);
+    /* INPUTS */
+    --input_text: url(../images/hd/inputs/text_edit_base.png);
+    --input_text_hover: url(../images/hd/inputs/text_edit_hover.png);
+    --input_radio_off: url(../images/hd/inputs/radio_off.png);
+    --input_radio_on: url(../images/hd/inputs/radio_on.png);
+    --input_radio_off_hover: url(../images/hd/inputs/radio_off_hover.png);
+    --input_radio_on_hover: url(../images/hd/inputs/radio_on_hover.png);
+    --input_dropdown_bg: url(../images/hd/inputs/dropdown_background.png);
+    --input_dropdown_arrow: url(../images/hd/inputs/dropdown_chevron.png);
+    /* TABS */
+    --tab_x: url(../images/hd/tabs/tabx.png);
+    --tab_back: url(../images/hd/tabs/tabback.png);
+    --tab_front: url(../images/hd/tabs/tabfront.png);
+    --tab_corner_lefttop: url(../images/hd/tabs/tabcornerleft.png);
+    /* OTHER */
+    --cursor: url(../images/hd/cursor.png);
+}
+
+* {
+    cursor: var(--cursor), auto;
+}
+
+body {
+    background: linear-gradient(white, #a6a6a6);
+    background: gray;
+    color: var(--color_format_black);
+}
+
+.mcfont {
+    font-family: 'Mojangles', fantasy;
+}
+
+.default_padding {
+    padding: 15px;
+}
+
+.color_format_0, .color_format_black {
+    color: var(--color_format_0) !important;
+}
+
+.color_format_1, .color_format_dark_blue {
+    color: var(--color_format_1) !important;
+}
+
+.color_format_2, .color_format_dark_green {
+    color: var(--color_format_2) !important;
+}
+
+.color_format_3, .color_format_dark_aqua {
+    color: var(--color_format_3) !important;
+}
+
+.color_format_4, .color_format_dark_red {
+    color: var(--color_format_4) !important;
+}
+
+.color_format_5, .color_format_dark_purple {
+    color: var(--color_format_5) !important;
+}
+
+.color_format_6, .color_format_gold {
+    color: var(--color_format_6) !important;
+}
+
+.color_format_7, .color_format_gray {
+    color: var(--color_format_7) !important;
+}
+
+.color_format_8, .color_format_dark_gray {
+    color: var(--color_format_8) !important;
+}
+
+.color_format_9, .color_format_blue {
+    color: var(--color_format_9) !important;
+}
+
+.color_format_a, .color_format_green {
+    color: var(--color_format_a) !important;
+}
+
+.color_format_b, .color_format_aqua {
+    color: var(--color_format_b) !important;
+}
+
+.color_format_c, .color_format_red {
+    color: var(--color_format_c) !important;
+}
+
+.color_format_d, .color_format_light_purple {
+    color: var(--color_format_d) !important;
+}
+
+.color_format_e, .color_format_yellow {
+    color: var(--color_format_e) !important;
+}
+
+.color_format_f, .color_format_white {
+    color: var(--color_format_f) !important;
+}
+
+.color_format_l, .color_format_bold {
+    font-weight: var(--color_format_l) !important;
+}
+
+.color_format_m, .color_format_strikethrough {
+    text-decoration: var(--color_format_m) !important;
+}
+
+.color_format_n, .color_format_underline {
+    text-decoration: var(--color_format_n) !important;
+}
+
+.color_format_o, .color_format_italic {
+    font-style: var(--color_format_o) !important;
+}
+
+.tabs {
+    clear: both;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    display: inline-flex;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.tab {
+    flex: 1 0 auto;
+}
+
+.tab:last-child {
+    margin-left: -4px;
+    flex: 0 0 60px;
+}
+
+.tab:last-child label {
+    padding: 2px 0 0 2px;
+    border-image: var(--tab_x) 8 fill round;
+    width: 42px;
+    height: 40px;
+    display: block;
+    background: rgba(0, 0, 0, 0) var(--icon_x) 2px 2px no-repeat;
+}
+
+.tab:last-child a {
+    margin: 2px 0 0 4px;
+    height: 40px;
+    display: block;
+    background: var(--icon_x) no-repeat !important;
+}
+
+.tab:last-child a:hover {
+    background: var(--icon_x_hover);
+}
+
+.tab:last-child a:active {
+    background: var(--icon_x_press);
+}
+
+.tab > label {
+    line-height: 44px;
+    padding: 0 20px;
+    text-align: center;
+    display: block;
+    position: relative;
+    border: 8px solid transparent;
+    border-image: var(--tab_back) 8 fill round;
+}
+
+.tab > [type=radio] {
+    display: none;
+}
+
+.tab.icons > label::before {
+    display: block;
+    transform: translateY(10px);
+    float: left;
+}
+
+.tab.icons > label::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.tab.icon_news > label::before {
+    content: var(--icon_newspaper);
+}
+
+.tab.icon_message > label::before {
+    content: var(--icon_message);
+}
+
+.tab.icon_settings > label::before {
+    content: var(--icon_settings);
+}
+
+.tab.icon_chat > label::before {
+    content: var(--icon_book_writable);
+}
+
+.tab.icon_profile > label::before {
+    content: var(--icon_profile);
+}
+
+.tab.beta > label::after {
+    content: var(--icon_beta_flag);
+}
+
+.content .split-view {
+    display: flex;
+}
+
+.content.split-view {
+    padding: 0;
+}
+
+.split {
+    display: block;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.split.left {
+    flex: 1 1 auto;
+}
+
+.split.right {
+    flex: 0 0 auto;
+    border: none;
+    border-image: var(--icon_frame) 16 round;
+    border-left: 16px solid black;
+}
+
+.content .split-view.horizontal {
+    flex-direction: row;
+    height: 100%;
+}
+
+.content .split-view.vertical {
+    flex-direction: column;
+    /*
+        width: -webkit-fill-available;*/
+    width: 100%;
+    height: auto;
+}
+
+.split.top {
+    flex: 0 0 auto;
+}
+
+.split.bottom {
+    flex: 1 1 100%;
+    border: none;
+    border-image: var(--icon_frame) 16 round;
+    border-top: 16px solid black;
+}
+
+.content {
+    word-wrap: break-word;
+    position: fixed;
+    display: none;
+    padding: 15px;
+    top: 52px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border: 16px solid transparent;
+    border-image: var(--icon_frame) 16 round;
+    background-color: rgba(80, 80, 80, 0.6);
+    background-clip: padding-box;
+    overflow: auto;
+}
+
+.tab > [type=radio]:checked ~ label {
+    z-index: 2;
+    border-image-source: var(--tab_front);
+}
+
+.tabs .tab:first-child > [type=radio]:checked ~ label::after {
+    content: var(--tab_corner_lefttop);
+    position: absolute;
+    top: 100%;
+    right: 100%;
+    image-rendering: crisp-edges;
+    transform-origin: 5px 1px;
+    transform: scale(2);
+}
+
+.tab > [type=radio]:checked ~ label ~ .content {
+    z-index: 1;
+    display: block !important;
+}
+
+/* we don't want the annoying blue border */
+input, button, textarea, select, option {
+    outline: none;
+}
+
+/* and we want a gray placeholder, i guess */
+input::input-placeholder, ::-webkit-input-placeholder, ::-moz-placeholder, ::-ms-input-placeholder {
+    color: var(--color_format_gray)
+}
+
+input[type=checkbox] {
+    display: none;
+}
+
+button.icons::before {
+    display: block;
+    float: left;
+}
+
+button.icons.icon_profile::before {
+    transform: translateX(3px) translateY(3px);
+}
+
+button.icons::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+button.icon_profile::before {
+    content: var(--icon_profile);
+}
+
+button.icon_notification::before {
+    content: var(--icon_info_bulb);
+}
+
+button.icon_security::before {
+    content: var(--icon_lock);
+}
+
+button.icon_message::before {
+    content: var(--icon_message);
+}
+
+button.icon_message_read::before {
+    content: var(--icon_message_read);
+}
+
+.conversation {
+    width: calc(100% - 302px);
+}
+
+.conversation div {
+    border: 4px solid black;
+    background: var(--input_button);
+    border-image: var(--input_button) 8 fill round;
+    clear: both;
+    display: block;
+    width: 400px;
+}
+
+.conversation div .info {
+    border-width: 0 0 4px 0;
+    display: block;
+    width: 100%;
+}
+
+.conversation div {
+    float: left;
+}
+
+.conversation div[me="true"] {
+    float: right;
+}
+
+.content form {
+    border: 16px solid transparent;
+    border-image: var(--icon_frame) 16 round;
+    /* border-top-width: 30px; */
+    border-image-width: 16px;
+    border-image-outset: 0;
+    display: flex;
+    padding: 0px 4px;
+    background-color: rgba(85, 85, 85, 0.5);
+    border-radius: 16px;
+    background-clip: border-box;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.content form[form-title]:before {
+    content: attr(form-title);
+    border: 4px solid transparent;
+    background-color: #c6c6c6;
+    background-clip: padding-box;
+    border-image: var(--icon_frame_inner) 4 round;
+    /* border-image-width: 0px 0px 8px 0; */
+    flex: 0 0 auto;
+    display: flex;
+    margin: -2px -2px -4px -2px;
+    padding: 0 4px 12px 4px;
+    align-items: center;
+    justify-content: center;
+    line-height: 16px;
+    width: 100%;
+}
+
+.content .form_error {
+    background-color: var(--color_format_red);
+    color: var(--color_format_dark_red) !important;
+    width: calc(100% - 4px);
+    margin: 4px 0 0 0 !important;
+    padding: 6px 0 0 0;
+    text-align: left;
+    line-height: 1.5 !important;
+    display: inline-block;
+    border: 2px solid var(--color_format_dark_red);
+}
+
+.content .form_error::before {
+    content: "";
+    display: inline-block !important;
+    background: var(--icon_error) no-repeat center;
+    width: 26px;
+    height: 40px;
+    margin: -1px 5px 5px 5px;
+    clear: both;
+}
+
+.content .label {
+    text-align: left;
+    align-self: flex-start;
+    margin: 10px 0 0 2px;
+    line-height: 2;
+}
+
+.content input, .content button {
+    margin: 2px;
+}
+
+.content input[type=checkbox] + label {
+    display: inline-block;
+    background: var(--input_toggle_off) no-repeat !important;
+    /* width: 60px; */
+    height: 32px;
+    /* display: inline-block; */
+    padding-left: 65px;
+    margin-left: 4px;
+    line-height: 36px;
+}
+
+/* custom checkbox/toggle styles */
+.content input[type=checkbox] + label:hover {
+    background: var(--input_toggle_off_hover);
+}
+
+.content input[type=checkbox]:checked + label {
+    background: var(--input_toggle_on);
+}
+
+.content input[type=checkbox]:checked + label:hover {
+    background: var(--input_toggle_on_hover);
+}
+
+/* custom text-type inputs */
+.content input[type=text], .content input[type=password] {
+    border-image: var(--input_text) 8 fill round;
+    color: var(--color_format_f) !important;
+    line-height: 30px;
+    width: 255px;
+    vertical-align: middle;
+    text-align: left;
+    padding-left: 5px;
+    height: 50px;
+    font-family: 'Mojangles', fantasy;
+    font-size: medium;
+    border-width: 4px;
+}
+
+.content input[type=text]:hover, .content input[type=password]:hover {
+    border-image-source: var(--input_text_hover);
+    color: var(--color_format_f) !important;
+}
+
+/*Because FireFox currently is stupid af*/
+.content :-webkit-autofill, .content :-webkit-autofill:focus {
+    border-image: var(--input_text) 8 fill round;
+    color: var(--color_format_f) !important;
+    line-height: 30px;
+    width: 255px;
+    vertical-align: middle;
+    text-align: left;
+    padding-left: 5px;
+    height: 50px;
+    font-family: 'Mojangles', fantasy;
+    font-size: medium;
+    border-width: 4px;
+}
+
+.content :-webkit-autofill, .content :-webkit-autofill:hover {
+    border-image-source: var(--input_text_hover);
+    color: var(--color_format_f) !important;
+}
+
+/*custom radio buttons */
+.content input[type=radio] {
+    display: none;
+}
+
+.content input[type=radio] + label {
+    padding-left: 30px;
+    background: var(--input_radio_off) no-repeat center left;
+}
+
+.content input[type=radio]:checked + label {
+    background-image: var(--input_radio_on);
+}
+
+.content input[type=radio]:hover + label {
+    background-image: var(--input_radio_off_hover);
+}
+
+.content input[type=radio]:hover:checked + label {
+    background-image: var(--input_radio_on_hover);
+}
+
+/*custom buttons + input type button/submit */
+.content input[type=button], .content input[type=submit], .content input[type=reset], button, .content select {
+    border-image: var(--input_button) 8 fill round;
+    color: var(--color_format_dark_gray);
+    height: 50px !important;
+    line-height: 30px;
+    /* width: 100%; */
+    vertical-align: middle;
+    font-family: 'Mojangles', fantasy;
+    font-size: medium;
+    text-align: center;
+    border-width: 4px;
+    width: 255px;
+}
+
+.content input[type=button]:active, .content input[type=submit]:active, .content input[type=reset]:active, .content button:active, .content select:active {
+    border-image-source: var(--input_button_active);
+}
+
+.content input[type=button]:hover, .content input[type=submit]:hover, .content input[type=reset]:hover, .content button:hover, .content select:hover {
+    border-image-source: var(--input_button_hover);
+}
+
+.content input[type=button]:hover:active, .content input[type=submit]:hover:active, .content input[type=reset]:hover:active, .content button:hover:active, .content select:hover:active {
+    border-image-source: var(--input_button_hover_active);
+}
+
+.content select {
+    width: 255px;
+}
+
+.content select option::after {
+    content: var(--input_dropdown_arrow);
+    display: block;
+    height: 10px;
+    width: 10px;
+    position: absolute;
+    left: 20px;
+    z-index: 100;
+}
+
+.content select option {
+    background: gray;
+    border-image: var(--input_dropdown_bg) 4 fill round;
+    border-width: 4px;
+    display: block;
+}
+
+form .split-view.horizontal {
+    width: 100%;
+    height: auto !important;
+    padding: 0;
+    margin: 0;
+}
+
+form .split.left {
+    flex: 0 0 auto;
+}
+
+/* Just the fun part */
+#yes {
+    display: none;
+}
+
+#no {
+    display: initial;
+}
+
+.content input[type=checkbox]:checked ~ div #yes {
+    display: initial;
+}
+
+.content input[type=checkbox]:checked ~ div #no {
+    display: none;
+}
+
+.head {
+    image-rendering: pixelated;
+}
+
+.userinfo.table {
+    border-spacing: 0 7px;
+}
+
+.userinfo.table .table_row .table_cell {
+    vertical-align: middle;
+}
+
+.friendlist {
+    display: inline-table;
+    width: 100%;
+    height: 100%;
+    color: var(--color_format_dark_gray);
+}
+
+.friendlist .friend {
+    display: table-row;
+    height: 32px;
+}
+
+.friendlist .friend div {
+    display: table-cell;
+    border: 2px outset buttonface;
+    border-image: var(--input_button) 8 fill round;
+    line-height: 30px;
+    vertical-align: middle;
+    width: 32px;
+}
+
+.friendlist .friend .status, .rank, .friendlist .friend.infobox a, .mcoin {
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    text-align: center;
+    background: no-repeat center;
+}
+
+.friendlist .friend .status {
+    background-image: var(--icon_dot3);
+    height: 30px;
+    width: 30px;
+}
+
+.friendlist .friend .status[online=true] {
+    background-image: var(--icon_dot1);
+}
+
+.friendlist .friend .status[online=false] {
+    background-image: var(--icon_dot2);
+}
+
+.rank {
+    background-image: var(--icon_permissions_custom);
+    height: 14px;
+    width: 14px;
+}
+
+.rank[rank=builder] {
+    background-image: var(--icon_permissions_builder);
+}
+
+.rank[rank=administrator], .rank[rank=op] {
+    background-image: var(--icon_permissions_op);
+}
+
+.rank[rank=helper] {
+    background-image: var(--icon_permissions_helper);
+}
+
+.rank[rank=visitor] {
+    background-image: var(--icon_permissions_visitor);
+}
+
+.rank[rank=member] {
+    background-image: var(--icon_permissions_member);
+}
+
+.rank[rank=vip] {
+    background-image: var(--icon_permissions_vip);
+}
+
+.friendlist .friend.infobox a {
+    background-image: var(--icon_message);
+    height: 32px;
+    width: 32px;
+}
+
+.friendlist .friend.infobox a[title=more] {
+    background-image: var(--icon_three_dots);
+}
+
+.mcoin {
+    background-image: var(--icon_coin);
+    height: 11px;
+    width: 11px;
+    zoom: 2;
+    image-rendering: pixelated;
+    vertical-align: text-bottom;
+}
+
+.friendlist .friend .name {
+    width: auto;
+}
+
+.friendlist .friend.infobox {
+    display: none;
+}
+
+.friendlist .friend:hover + .infobox, .friendlist .friend.infobox:hover {
+    display: table-row;
+}
+
+.userinfo {
+    line-height: 1.5;
+}
+
+.userinfo .user_top {
+    line-height: 32px;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.experiencebar {
+    -webkit-border-image: var(--icon_experience_empty) 0 25 fill round;
+    border-image: var(--icon_experience_empty) 0 25 fill round;
+    border-color: black;
+    border-width: 0 25px;
+    width: 264px;
+    height: 10px;
+    display: inline-block;
+    color: var(--color_format_green);
+    text-align: center;
+    border-style: solid;
+    line-height: 10px;
+    vertical-align: middle;
+    image-rendering: pixelated;
+}
+
+.experiencebar::before {
+    content: "";
+    background: var(--icon_experience_full) repeat-x;
+    width: 0;
+    max-width: 312px;
+    height: 10px;
+    display: block;
+    position: relative;
+    left: -23px;
+    color: var(--color_format_green);
+    image-rendering: pixelated;
+}
+
+.experiencebar::after {
+    content: attr(level);
+    width: 264px;
+    height: 10px;
+    display: block;
+    position: relative;
+    top: -18px;
+    color: var(--color_format_green);
+    text-shadow: 2px 2px 0 #2c3a25;
+    z-index: 0;
+}
+
+/* custom scrollbar */
+/* Let's get this party started */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background-image: var(--icon_scroll_rail);
+    border-image: var(--icon_scroll_rail) 5 fill round;
+    /*border: 0 solid;*/
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    border-image: var(--icon_scroll_handle) 4 fill round;
+    border-style: solid;
+    border-width: 6px 4px;
+}
+
+/*:window-inactive*/
+hr {
+    height: 30px;
+    border: 0 solid #434343;
+    border-top-width: 4px;
+    border-radius: 20px;
+}
+
+hr:before {
+    display: block;
+    content: "";
+    height: 30px;
+    margin-top: -34px;
+    border: 0 solid #434343;
+    border-bottom-width: 4px;
+    border-radius: 20px;
+}

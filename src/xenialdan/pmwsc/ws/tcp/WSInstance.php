@@ -107,7 +107,7 @@ class WSInstance extends Thread
     {
         if (empty(trim($message))) return;
         if ($user->handshake) {
-            $this->logger->notice($user);
+            $this->logger->notice((string)$user);
             $message = htmlspecialchars($message);
             $message = TextFormat::toHTML($message);
             $message = str_replace("\n", "<br>", $message);
@@ -571,6 +571,7 @@ class WSInstance extends Thread
         $user->authenticated = true;
         $this->users[$user->id] = $user;
         $this->logger->info("Logged in and authenticated user " . $this->users[$user->id]);
+        $user->recalculatePermissions();
     }
 
     /**
@@ -839,7 +840,7 @@ class WSInstance extends Thread
                 return;
             }
         }
-        $this->send($user, "Echo @" . $user->name . ": " . $message);//echo to the user
+        #$this->send($user, "Echo @" . $user->name . ": " . $message);//echo to the user
         if ($message !== "") {
             if ($message[0] === "/") {
                 $this->cmd = $message;
