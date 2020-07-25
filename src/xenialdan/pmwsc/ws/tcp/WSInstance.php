@@ -94,7 +94,7 @@ class WSInstance extends Thread
     {
         foreach ($this->users as $user) {
             $user->socket = $this->getSocketByUser($user);
-            $this->send($user, "Broadcast " . $message);
+            $this->send($user, $message);
         }
     }
 

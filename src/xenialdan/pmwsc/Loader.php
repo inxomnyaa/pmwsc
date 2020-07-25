@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace xenialdan\pmwsc;
 
+use Exception;
+use InvalidArgumentException;
 use pocketmine\plugin\PluginBase;
+use pocketmine\plugin\PluginException;
 use pocketmine\utils\Config;
 use raklib\utils\InternetAddress;
 use xenialdan\pmwsc\command\WebsocketCommand;
@@ -36,17 +39,24 @@ class Loader extends PluginBase
         self::$instance = $this;
     }
 
+    /**
+     * @throws PluginException
+     * @throws InvalidArgumentException
+     */
     public function onEnable()
     {
         $this->reloadConfig();
         //save files
         foreach (array_keys($this->getResources()) as $path) {
-            //$this->saveResource($path);
-            $this->saveResource($path, true);//TODO remove
+            $this->saveResource($path);
+            //$this->saveResource($path, true);//TODO remove
         }
         //start website websocket listener thread
         $serverRoot = $this->getDataFolder() . "wwwroot";
         $ws = \Frago9876543210\WebServer\API::startWebServer($this, \Frago9876543210\WebServer\API::getPathHandler($serverRoot));
+        if ($ws === null) {
+            throw new PluginException('Could not start WebServer, disabling!');
+        }
         $ws->getClassLoader()->getParent()->addPath(realpath($serverRoot), true);
         //generate login files
         self::$passwords = new Config($this->getDataFolder() . "passwords.yml");
@@ -60,29 +70,28 @@ class Loader extends PluginBase
 
     public function onDisable()
     {
-        if($this->websocketServer instanceof WS){
+        if ($this->websocketServer instanceof WS) {
             $this->websocketServer->stop();
         }
     }
 
     private function startWebsocketServer()
     {
-        try{
+        try {
             $this->websocketServer = new WS(
                 $this->getServer(),
                 self::$ia
             );
-        }catch(\Exception $e){
-            $this->getLogger()->critical("WS can't be started: " . $e->getMessage());
+        } catch (Exception $e) {
             $this->getLogger()->logException($e);
-            $this->getServer()->getPluginManager()->disablePlugin($this);
+            throw new PluginException('Could not start Websocket, disabling! Reason: ' . $e->getMessage());
         }
     }
 
-    public static function getAuthCode(string $playername, bool $createNew = true):string
+    public static function getAuthCode(string $playername, bool $createNew = true): string
     {
         $playername = strtolower($playername);
-        if($createNew || !self::$passwords->exists($playername, true)) {
+        if ($createNew || !self::$passwords->exists($playername, true)) {
             $characters = "ABCDEFGHKLMNPQRSTVWXYZ123456789";
             $auth = substr(str_shuffle($characters), 5, 5);
             self::$passwords->set($playername, strtolower($auth));

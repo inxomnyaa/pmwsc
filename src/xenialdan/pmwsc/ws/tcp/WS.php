@@ -19,7 +19,6 @@ declare(strict_types=1);
 namespace xenialdan\pmwsc\ws\tcp;
 
 use pocketmine\event\server\CommandEvent;
-use pocketmine\permission\Permissible;
 use pocketmine\permission\PermissionManager;
 use pocketmine\Server;
 use pocketmine\snooze\SleeperNotifier;
@@ -103,7 +102,7 @@ class WS
                     $this->instance->user = $user;
                 }
             }
-        } elseif ($command[0] === "/") {
+        } else if ($command[0] === "/") {
             $command = ltrim($command, "/");
             $sender = $this->instance->user;
             $this->server->getLogger()->debug("Called command " . $command . " for user " . $sender);
@@ -124,14 +123,17 @@ class WS
         }, $this->instance);
     }
 
+    /**
+     * Call this to broadcast a message to pmmp
+     * @param string $displayName
+     * @param string $message
+     * @return string
+     */
     public function broadcast(string $displayName, string $message): string
     {
         $recipients = PermissionManager::getInstance()->getPermissionSubscriptions(Server::BROADCAST_CHANNEL_USERS);
-        var_dump(array_filter($recipients, function (Permissible $permissible) {
-            return $permissible instanceof WSUser;
-        }));
         $format = "chat.type.text";
-        $this->server->broadcastMessage(($reply = $this->server->getLanguage()->translateString($format, [$displayName, $message])), $recipients);
+        $this->server->broadcastMessage(($reply = '[Web Chat] ' . $this->server->getLanguage()->translateString($format, [$displayName, $message])), $recipients);
 
         $this->instance->synchronized(function (WSInstance $thread) {
             $thread->notify();
@@ -150,5 +152,13 @@ class WS
     public function getServer(): Server
     {
         return $this->server;
+    }
+
+    /**
+     * @return WSInstance
+     */
+    public function getInstance(): WSInstance
+    {
+        return $this->instance;
     }
 }

@@ -1,9 +1,10 @@
 ---
 name: pmwsc
 main: xenialdan\pmwsc\Loader
-version: 1.0.1
+version: 1.0.2
 api: [3.0.0, 4.0.0]
 load: POSTWORLD
+soft-depend: [DEVirion]
 authors:
 - XenialDan
 description: pmmp WebSocket chat host

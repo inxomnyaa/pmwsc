@@ -19,7 +19,8 @@ class EventListener implements Listener
     }
 
     public function onMessage(PlayerChatEvent $event){
-        Loader::getInstance()->websocketServer->broadcast($event->getPlayer()->getDisplayName(), $event->getMessage());
+        $fullMessage = $this->owner->getServer()->getLanguage()->translateString($event->getFormat(), [$event->getPlayer()->getDisplayName(), $event->getMessage()]);
+        Loader::getInstance()->websocketServer->getInstance()->broadcast('[Server] ' . $fullMessage);
     }
 
     public function onLogin(PlayerLoginEvent $event){
