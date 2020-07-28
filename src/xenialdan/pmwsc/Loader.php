@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace xenialdan\pmwsc;
 
 use Exception;
+use Frago9876543210\WebServer\API;
+use Frago9876543210\WebServer\WebServer;
 use InvalidArgumentException;
 use pocketmine\plugin\PluginBase;
 use pocketmine\plugin\PluginException;
@@ -20,10 +22,14 @@ class Loader extends PluginBase
     private static $instance = null;
     /** @var InternetAddress */
     private static $ia;
+    /** @var WebServer|null */
+    private static $ws;
     /** @var WS */
     public $websocketServer;
     /** @var Config */
     public static $passwords;
+    /** @var bool */
+    private $isSelfHosted = true;
 
     /**
      * Returns an instance of the plugin
@@ -49,15 +55,17 @@ class Loader extends PluginBase
         //save files
         foreach (array_keys($this->getResources()) as $path) {
             $this->saveResource($path);
-            //$this->saveResource($path, true);//TODO remove
         }
         //start website websocket listener thread
-        $serverRoot = $this->getDataFolder() . "wwwroot";
-        $ws = \Frago9876543210\WebServer\API::startWebServer($this, \Frago9876543210\WebServer\API::getPathHandler($serverRoot));
-        if ($ws === null) {
-            throw new PluginException('Could not start WebServer, disabling!');
+        if ($this->isSelfHosted = (bool)($this->getConfig()->get("host-website", true))) {
+            $hostPort = (int)($this->getConfig()->get("host-port", 80));
+            $serverRoot = $this->getDataFolder() . "wwwroot";
+            self::$ws = API::startWebServer($this, API::getPathHandler($serverRoot), $hostPort);
+            if (self::$ws === null) {
+                throw new PluginException('Could not start WebServer, disabling!');
+            }
+            self::$ws->getClassLoader()->getParent()->addPath(realpath($serverRoot), true);
         }
-        $ws->getClassLoader()->getParent()->addPath(realpath($serverRoot), true);
         //generate login files
         self::$passwords = new Config($this->getDataFolder() . "passwords.yml");
         $port = (int)($this->getConfig()->get("port", 9000));
@@ -73,6 +81,9 @@ class Loader extends PluginBase
         if ($this->websocketServer instanceof WS) {
             $this->websocketServer->stop();
         }
+        if ($this->isSelfHosted()) {
+            self::$ws->shutdown();
+        }
     }
 
     private function startWebsocketServer()
@@ -86,6 +97,11 @@ class Loader extends PluginBase
             $this->getLogger()->logException($e);
             throw new PluginException('Could not start Websocket, disabling! Reason: ' . $e->getMessage());
         }
+    }
+
+    public function isSelfHosted(): bool
+    {
+        return self::$ws !== null;
     }
 
     public static function getAuthCode(string $playername, bool $createNew = true): string

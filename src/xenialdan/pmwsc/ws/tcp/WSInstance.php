@@ -142,7 +142,7 @@ class WSInstance extends Thread
         $lengthField = "";
         if ($length < 126) {
             $b2 = $length;
-        } elseif ($length < 65536) {
+        } else if ($length < 65536) {
             $b2 = 126;
             $hexLength = dechex($length);
             //$this->stdout("Hex Length: $hexLength");
@@ -182,6 +182,11 @@ class WSInstance extends Thread
 
     public function close()
     {
+        foreach ($this->clients as $client) {
+            $this->disconnectClient($client, "Server stopping");
+        }
+        unset($this->clients);
+        gc_collect_cycles();
         $this->stop = \true;
     }
 
@@ -223,9 +228,10 @@ class WSInstance extends Thread
                                 $this->clients[$id] = $client;
                                 $this->connectClient($client, $id, false);
                                 $timeouts[$id] = \microtime(\true) + 5;
+                                \socket_set_option($client, SOL_SOCKET, SO_RCVTIMEO, ["sec" => 5, "usec" => 0]);//TODO check if this causes trouble
                             }
                         }//TODO else client could not connect-> error checks
-                    } elseif ($sock === $this->ipcSocket) {//todo check if needed
+                    } else if ($sock === $this->ipcSocket) {//todo check if needed
                         //read dummy data
                         \socket_read($sock, 65535);
                     } else {
@@ -311,7 +317,7 @@ class WSInstance extends Thread
         $numBytes = @socket_recv($client, $message, 2048, 0);
         if ($this->stop) {
             return \false;
-        } elseif ($numBytes === false) {
+        } else if ($numBytes === false) {
             $sockErrNo = \socket_last_error($client);
             switch ($sockErrNo) {
                 case SOCKET_ENETRESET: //Network dropped connection because of reset
@@ -332,10 +338,11 @@ class WSInstance extends Thread
                     $this->logger->error('Socket error: ' . socket_strerror($sockErrNo));
             }
             //socket_clear_error($client);//TODO clear error?
-        } elseif ($numBytes == 0) {
+        } else if ($numBytes == 0) {
             $this->disconnectClient($client, "TCP connection lost");
             return false;
         } else {
+            //socket_set_option($socket,SOL_SOCKET, SO_RCVTIMEO, array("sec"=>5, "usec"=>0));//TODO check if this causes trouble
             $user = $this->getUserBySocket($client);
             if ($user instanceof WSUser && !$user->authenticated) {
                 $tmp = str_replace("\r", '', $message);
@@ -343,10 +350,10 @@ class WSInstance extends Thread
                     return false; // If the client has not finished sending the header, then wait before sending our upgrade response.
                 }
                 $this->doHandshake($user, $message);
-            } elseif ($user instanceof WSUser) {
+            } else if ($user instanceof WSUser) {
                 //decode message
                 $headers = $this->extractHeaders($message);
-                if (($message = $this->deframe($message, $user, $headers)) !== FALSE) {
+                if (($message = $this->deframe($message, $user, $headers)) !== false) {
                     $this->process($user, $message);
                 }
             }
@@ -427,13 +434,13 @@ class WSInstance extends Thread
     protected function doHandshake(WSUser $user, string $buffer)
     {
         $magicGUID = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";//TODO check if this should be random
-        $headers = array();
+        $headers = [];
         $lines = explode("\n", $buffer);
         foreach ($lines as $line) {
             if (strpos($line, ":") !== false) {
                 $header = explode(":", $line, 2);
                 $headers[strtolower(trim($header[0]))] = trim($header[1]);
-            } elseif (stripos($line, "get ") !== false) {
+            } else if (stripos($line, "get ") !== false) {
                 preg_match("/GET (.*) HTTP/i", $buffer, $reqResource);
                 $headers['get'] = trim($reqResource[1]);
             }
@@ -450,7 +457,7 @@ class WSInstance extends Thread
         if (!isset($headers['upgrade']) || strtolower($headers['upgrade']) != 'websocket') {
             $handshakeResponse = "HTTP/1.1 400 Bad Request";
         }
-        if (!isset($headers['connection']) || strpos(strtolower($headers['connection']), 'upgrade') === FALSE) {
+        if (!isset($headers['connection']) || strpos(strtolower($headers['connection']), 'upgrade') === false) {
             $handshakeResponse = "HTTP/1.1 400 Bad Request";
         }
         if (!isset($headers['sec-websocket-key'])) {
@@ -581,14 +588,14 @@ class WSInstance extends Thread
      */
     protected function extractHeaders(string $message)
     {
-        $header = array('fin' => $message[0] & chr(128),
+        $header = ['fin' => $message[0] & chr(128),
             'rsv1' => $message[0] & chr(64),
             'rsv2' => $message[0] & chr(32),
             'rsv3' => $message[0] & chr(16),
             'opcode' => ord($message[0]) & 15,
             'hasmask' => $message[1] & chr(128),
             'length' => 0,
-            'mask' => "");
+            'mask' => ""];
         $header['length'] = (ord($message[1]) >= 128) ? ord($message[1]) - 128 : ord($message[1]);
 
         if ($header['length'] == 126) {
@@ -597,7 +604,7 @@ class WSInstance extends Thread
             }
             $header['length'] = ord($message[2]) * 256
                 + ord($message[3]);
-        } elseif ($header['length'] == 127) {
+        } else if ($header['length'] == 127) {
             if ($header['hasmask']) {
                 $header['mask'] = $message[10] . $message[11] . $message[12] . $message[13];
             }
@@ -609,7 +616,7 @@ class WSInstance extends Thread
                 + ord($message[7]) * 65536
                 + ord($message[8]) * 256
                 + ord($message[9]);
-        } elseif ($header['hasmask']) {
+        } else if ($header['hasmask']) {
             $header['mask'] = $message[2] . $message[3] . $message[4] . $message[5];
         }
         return $header;
@@ -627,7 +634,7 @@ class WSInstance extends Thread
         }
         if ($headers['length'] > 65535) {
             $offset += 8;
-        } elseif ($headers['length'] > 125) {
+        } else if ($headers['length'] > 125) {
             $offset += 2;
         }
         return $offset;
@@ -653,6 +660,7 @@ class WSInstance extends Thread
                 $this->disconnectClient($user->socket, "User disconnected");
                 return "";
             case self::MESSAGE_TYPE_PING:
+                var_dump("!!!GOT PING!!!");
                 $pongReply = true;
                 break;
             case self::MESSAGE_TYPE_PONG:
@@ -664,15 +672,18 @@ class WSInstance extends Thread
         }
 
         if ($this->checkRSVBits($headers, $user)) {
+            var_dump("!!!RSV BITS FAILED!!!");
             return false;
         }
 
         $payload = $user->partialMessage . $this->extractPayload($message, $headers);
 
         if ($pongReply) {
+            var_dump("!!!WILL PONGREPLY!!!");
             $reply = $this->frame($payload, $user, self::MESSAGE_TYPE_PONG);
             $this->logger->debug("$user PONG");
             $this->writePacket($user->socket, $reply);
+            var_dump("!!!DID SEND PONG!!!");
             return false;
         }
         if ($headers['length'] > strlen($this->applyMask($headers, $payload))) {
@@ -719,7 +730,7 @@ class WSInstance extends Thread
         }
         if ($headers['length'] > 65535) {
             $offset += 8;
-        } elseif ($headers['length'] > 125) {
+        } else if ($headers['length'] > 125) {
             $offset += 2;
         }
         return substr($message, $offset);

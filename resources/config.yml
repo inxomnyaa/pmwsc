@@ -1,4 +1,9 @@
 ---
-# Port default 9000
+# WebSocket port, default 9000
 port: 9000
+# If you want to host the website yourself, set this to false and copy the contents
+# of plugin_data/pmwsc/wwwroot to your website
+host-website: true
+# The port the website will be accessible from, default 80
+host-port: 80
 ...
