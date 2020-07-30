@@ -1,6 +1,5 @@
 <?php
 
-
 namespace xenialdan\pmwsc\listener;
 
 use pocketmine\event\Listener;
@@ -18,12 +17,14 @@ class EventListener implements Listener
         $this->owner = $plugin;
     }
 
-    public function onMessage(PlayerChatEvent $event){
+    public function onMessage(PlayerChatEvent $event): void
+    {
         $fullMessage = $this->owner->getServer()->getLanguage()->translateString($event->getFormat(), [$event->getPlayer()->getDisplayName(), $event->getMessage()]);
         Loader::getInstance()->websocketServer->getInstance()->broadcast('[Server] ' . $fullMessage);
     }
 
-    public function onLogin(PlayerLoginEvent $event){
+    public function onLogin(PlayerLoginEvent $event): void
+    {
         Loader::getAuthCode($event->getPlayer()->getName(), false);
     }
 

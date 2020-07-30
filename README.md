@@ -14,7 +14,5 @@ Implementation of the Websocket Protocol to allow full-featured chatting with ba
 ## Commands
 - `/websocket`: Sends you a new authentication code
 ## About the code
-The code uses a modified version of the pmmp RCON implementation - but it is planned to migrate this to fully standalone code
-
 Uses code from the PHP-Websockets repo: https://github.com/ghedipunk/PHP-Websockets. (TODO verify that the code is still used)
 PHP-Websockets is coded and "Copyright (c) 2012, Adam Alexander". You can find the license in /resources/php_websockets_slicense.txt

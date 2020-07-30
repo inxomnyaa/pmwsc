@@ -8,6 +8,7 @@ use Exception;
 use Frago9876543210\WebServer\API;
 use Frago9876543210\WebServer\WebServer;
 use InvalidArgumentException;
+use InvalidStateException;
 use pocketmine\plugin\PluginBase;
 use pocketmine\plugin\PluginException;
 use pocketmine\utils\Config;
@@ -19,7 +20,7 @@ use xenialdan\pmwsc\ws\tcp\WS;
 class Loader extends PluginBase
 {
     /** @var Loader */
-    private static $instance = null;
+    private static $instance;
     /** @var InternetAddress */
     private static $ia;
     /** @var WebServer|null */
@@ -35,7 +36,7 @@ class Loader extends PluginBase
      * Returns an instance of the plugin
      * @return Loader
      */
-    public static function getInstance()
+    public static function getInstance(): Loader
     {
         return self::$instance;
     }
@@ -57,9 +58,9 @@ class Loader extends PluginBase
             $this->saveResource($path);
         }
         //start website websocket listener thread
-        if ($this->isSelfHosted = (bool)($this->getConfig()->get("host-website", true))) {
-            $hostPort = (int)($this->getConfig()->get("host-port", 80));
-            $serverRoot = $this->getDataFolder() . "wwwroot";
+        if ($this->isSelfHosted = (bool)($this->getConfig()->get('host-website', true))) {
+            $hostPort = (int)($this->getConfig()->get('host-port', 80));
+            $serverRoot = $this->getDataFolder() . 'wwwroot';
             self::$ws = API::startWebServer($this, API::getPathHandler($serverRoot), $hostPort);
             if (self::$ws === null) {
                 throw new PluginException('Could not start WebServer, disabling!');
@@ -67,10 +68,10 @@ class Loader extends PluginBase
             self::$ws->getClassLoader()->getParent()->addPath(realpath($serverRoot), true);
         }
         //generate login files
-        self::$passwords = new Config($this->getDataFolder() . "passwords.yml");
-        $port = (int)($this->getConfig()->get("port", 9000));
+        self::$passwords = new Config($this->getDataFolder() . 'passwords.yml');
+        $port = (int)($this->getConfig()->get('port', 9000));
         self::$ia = new InternetAddress($this->getServer()->getIp(), $port, 4);
-        $this->getServer()->getCommandMap()->register("websocket", new WebsocketCommand("websocket", $this));
+        $this->getServer()->getCommandMap()->register('websocket', new WebsocketCommand('websocket', $this));
         $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
         //start the messaging websocket listener thread
         $this->startWebsocketServer();
@@ -86,7 +87,10 @@ class Loader extends PluginBase
         }
     }
 
-    private function startWebsocketServer()
+    /**
+     * @throws PluginException
+     */
+    private function startWebsocketServer(): void
     {
         try {
             $this->websocketServer = new WS(
@@ -104,11 +108,17 @@ class Loader extends PluginBase
         return self::$ws !== null;
     }
 
+    /**
+     * @param string $playername
+     * @param bool $createNew
+     * @return string
+     * @throws InvalidStateException
+     */
     public static function getAuthCode(string $playername, bool $createNew = true): string
     {
         $playername = strtolower($playername);
         if ($createNew || !self::$passwords->exists($playername, true)) {
-            $characters = "ABCDEFGHKLMNPQRSTVWXYZ123456789";
+            $characters = 'ABCDEFGHKLMNPQRSTVWXYZ123456789';
             $auth = substr(str_shuffle($characters), 5, 5);
             self::$passwords->set($playername, strtolower($auth));
             self::$passwords->save();

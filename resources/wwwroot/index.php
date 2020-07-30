@@ -1,5 +1,5 @@
 <?php require_once('setup.php'); ?>
-<html>
+<html lang="en">
 <head><title><?= TITLE ?> - by XenialDan</title>
     <link rel="stylesheet" href="mcbe_ui_web/css/main.css">
     <link rel="stylesheet" href="mcbe_ui_web/css/MCPEGUIhd.css">

@@ -2,6 +2,7 @@
 
 namespace xenialdan\pmwsc\user;
 
+use InvalidStateException;
 use pocketmine\command\CommandSender;
 use pocketmine\lang\TextContainer;
 use pocketmine\permission\Permissible;
@@ -11,7 +12,9 @@ use pocketmine\permission\PermissionAttachment;
 use pocketmine\permission\PermissionAttachmentInfo;
 use pocketmine\permission\PermissionManager;
 use pocketmine\plugin\Plugin;
+use pocketmine\plugin\PluginException;
 use pocketmine\Server;
+use RuntimeException;
 
 class WSUser extends WebSocketUser implements Permissible, CommandSender
 {
@@ -21,14 +24,14 @@ class WSUser extends WebSocketUser implements Permissible, CommandSender
     public $authenticated = false;
 
     /** @var PermissibleBase */
-    private $perm = null;
+    private $perm;
     /** @var bool */
     private $op = false;
 
     /** @var string */
-    private $messages = "";
+    private $messages = '';
 
-    function __construct(int $id, $socket, bool $authenticated)
+    public function __construct(int $id, $socket, bool $authenticated)
     {
         $this->perm = new PermissibleBase($this);
         parent::__construct($id, $socket);
@@ -38,7 +41,7 @@ class WSUser extends WebSocketUser implements Permissible, CommandSender
 
     public function __toString()
     {
-        return __CLASS__ . " ID: " . $this->id . " Authenticated " . ($this->authenticated ? "true" : "false") . " Name " . $this->name . " Socket " . $this->socket;
+        return __CLASS__ . ' ID: ' . $this->id . ' Authenticated ' . ($this->authenticated ? 'true' : 'false') . ' Name ' . $this->name . ' Socket ' . $this->socket;
     }
 
     /**
@@ -56,12 +59,12 @@ class WSUser extends WebSocketUser implements Permissible, CommandSender
      *
      * @return bool
      *
-     * @throws \InvalidStateException if the player is closed
+     * @throws InvalidStateException if the player is closed
      */
     public function hasPermission($name): bool
     {
-        if (is_null($this->socket) || !$this->authenticated) {
-            throw new \InvalidStateException("Trying to get permissions of closed socket, or not authenticated");
+        if ($this->socket === null || !$this->authenticated) {
+            throw new InvalidStateException('Trying to get permissions of closed socket, or not authenticated');
         }
         return $this->perm->hasPermission($name);
     }
@@ -72,6 +75,7 @@ class WSUser extends WebSocketUser implements Permissible, CommandSender
      * @param bool $value
      *
      * @return PermissionAttachment
+     * @throws PluginException
      */
     public function addAttachment(Plugin $plugin, string $name = null, bool $value = null): PermissionAttachment
     {
@@ -101,7 +105,7 @@ class WSUser extends WebSocketUser implements Permissible, CommandSender
 
         $permManager->subscribeToPermission(Server::BROADCAST_CHANNEL_USERS, $this);
         if ($this->isOp()) {
-            var_dump("hasAdmin");
+            var_dump('hasAdmin');
             $permManager->subscribeToPermission(Server::BROADCAST_CHANNEL_ADMINISTRATIVE, $this);
         }
     }
@@ -134,6 +138,10 @@ class WSUser extends WebSocketUser implements Permissible, CommandSender
         $this->op = $value;
     }
 
+    /**
+     * @param TextContainer|string $message
+     * @throws RuntimeException
+     */
     public function sendMessage($message)
     {
         if ($message instanceof TextContainer) {
@@ -181,6 +189,7 @@ class WSUser extends WebSocketUser implements Permissible, CommandSender
 
     /**
      * @inheritDoc
+     * @throws RuntimeException
      */
     public function getServer()
     {
